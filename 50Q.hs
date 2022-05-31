@@ -10,10 +10,16 @@ import Prelude hiding (enumFromTo, enumFromThenTo, (++), (!!), reverse, take, dr
 
 -- | Exercicio 1
 
-enumFromThenTo :: Int -> Int -> [Int]
-enumFromThenTo x y | x > y = []
-                   | otherwise = x : enumFromThenTo (x+1) y
+enumFromTo :: Int -> Int -> [Int]
+enumFromTo x y | x > y = []
+               | otherwise = x : enumFromTo (x+1) y
 
+
+-- | Exercicio 2
+
+enumFromThenTo :: Int -> Int -> Int -> [Int]
+enumFromThenTo x y z | x > z = []
+                     | otherwise = x : enumFromThenTo y (2*y-x) z
 
 -- | Exercicio 3
 
@@ -136,3 +142,91 @@ powerEnumFrom n m | m < 0 = []
     where
         auxpower n m counter | counter == m = []
                              | otherwise = n^counter : auxpower n m (counter+1)
+
+-- | Exercicio 21
+
+isPrime :: Int -> Bool -- ^ não utilizer o algoritmo que era pedido no enunciado, utilizei um mais básico
+isPrime 1 = False -- ^ eu defendo que um numero primo tem dois divisores positivos
+isPrime n = analisa n 2 
+    where
+        analisa n d | n <= d = True
+                    | mod n d == 0 = False
+                    | otherwise = analisa n (d+1)
+
+-- | Exercicio 22
+
+isPrefixOf :: Eq a => [a] -> [a] -> Bool
+isPrefixOf [] _ = True
+isPrefixOf _ [] = False
+isPrefixOf (x:xs) (y:ys) | x == y = isPrefixOf xs ys
+                         | otherwise = False
+
+-- | Exercicio 23
+
+isSuffixOf :: Eq a => [a] -> [a] -> Bool
+isSuffixOf [] _ = True
+isSuffixOf _ [] = False
+isSuffixOf x y | last x == last y = isSuffixOf (init x) (init y)
+               | otherwise = False
+
+-- | Exercicio 24
+
+isSubsequenceOf :: Eq a => [a] -> [a] -> Bool
+isSubsequenceOf [] _ = True
+isSubsequenceOf _ [] = False
+isSubsequenceOf (x:xs) (y:ys) | x == y = isSubsequenceOf xs ys
+                              | otherwise = isSubsequenceOf (x:xs) ys
+
+-- | Exercicio 25
+
+elemIndicies :: Eq a => a -> [a] -> [Int]
+elemIndicies _ [] = []
+elemIndicies x l = auxIndices x l 0
+    where
+        auxIndices _ [] _ = []
+        auxIndices x (y:ys) n | x == y = n : auxIndices x ys (n+1)
+                              | otherwise = auxIndices x ys (n+1)
+
+-- | Exercicio 26
+
+nub :: Eq a => [a] -> [a]
+nub [] = []
+nub (x:xs) | elem x xs = nub xs
+           | otherwise = x : nub xs
+
+nub' :: Eq a => [a] -> [a] -- ^ elementos ordenados tal como aparece no exemplo do enuciado
+nub' l = auxnub' l []
+    where
+        auxnub' [] _ = []
+        auxnub' (x:xs) acc | elem x acc = auxnub' xs acc
+                           | otherwise = x : auxnub' xs (acc ++ [x])
+
+-- | Exercicio 27
+
+delete :: Eq a => a -> [a] ->[a]
+delete _ [] = []
+delete x (y:ys) | x == y = ys
+                | otherwise = y : delete x ys
+
+-- | Exercicio 28
+
+(\\) :: Eq a => [a] -> [a] -> [a]
+(\\) x [] = x
+(\\) [] _ = []
+(\\) l (x:xs) = (\\) (delete x l) xs
+
+-- | Exercicio 29
+
+union :: Eq a => [a] -> [a] -> [a]
+union [] x = x
+union x [] = x
+union l (x:xs) | elem x l = union l xs
+               | otherwise = union (l ++ [x]) xs
+
+-- | Exercicio 30
+
+intersect :: Eq a => [a] -> [a] -> [a]
+intersect [] _ = []
+intersect _ [] = []
+intersect (x:xs) y | elem x y = x : intersect xs y
+                   | otherwise = intersect xs y
