@@ -26,8 +26,12 @@ enumFromTo x y | x > y = []
 -- | Exercicio 2
 
 enumFromThenTo :: Int -> Int -> Int -> [Int]
-enumFromThenTo x y z | x > z = []
-                     | otherwise = x : enumFromThenTo y (2*y-x) z
+enumFromThenTo x y z = auxenumFromThenTo x lim z
+    where
+        lim = abs (y - x)
+        auxenumFromThenTo x lim z | x > z = []
+                                  | otherwise = x : auxenumFromThenTo (x+lim) lim z 
+
 
 -- | Exercicio 3
 
