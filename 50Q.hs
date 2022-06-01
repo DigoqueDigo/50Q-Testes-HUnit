@@ -1,5 +1,5 @@
 {- |
-Module      : Questoes
+Module      : 50 Questoes
 Description : 50 quesões de programação funcional
 Copyright   : Diogo Marques 
 -}
@@ -401,14 +401,15 @@ hasLoops x movs = elem x (auxhasLoops x movs)
 
 contaQuadrados :: [Rectangulo] -> Int
 contaQuadrados [] = 0
-contaQuadrados ((Rect x y):z) | abs (fst x - snd x) == abs (fst y - snd y) = 1 + contaQuadrados z
+contaQuadrados ((Rect x y):z) | (fst x == fst y) || (snd x == snd y) = contaQuadrados z
+                              | abs (fst x - fst y) == abs (snd x - snd y) = 1 + contaQuadrados z
                               | otherwise = contaQuadrados z
 
 -- | Exercicio 49
 
---areaTotal :: [Rectangulo] -> Float
---areaTotal [] = 0
---areaTotal
+areaTotal :: [Rectangulo] -> Float
+areaTotal [] = 0
+areaTotal ((Rect x y):z) = abs (fst x - fst y) * abs (snd x - snd y) + areaTotal z
 
 -- | Exercicio 50
 
