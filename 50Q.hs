@@ -230,3 +230,122 @@ intersect [] _ = []
 intersect _ [] = []
 intersect (x:xs) y | elem x y = x : intersect xs y
                    | otherwise = intersect xs y
+
+-- | Exercicio 31
+
+insert :: Ord a => a -> [a] -> [a]
+insert x [] = [x]
+insert x l@(y:ys) | x < y = [x] ++ l
+                  | otherwise = y : insert x ys
+
+-- | Exercicio 32
+
+unwords :: [String] -> String
+unwords [] = ""
+unwords [x] = x
+unwords (x:xs) = x ++ " " ++ unwords xs
+
+-- | Exercicio 33
+
+unlines :: [String] -> String
+unlines [] = ""
+unlines (x:xs) = x ++ ['\n'] ++ unlines xs
+
+-- | Exercicio 34
+
+pMaior :: Ord a => [a] -> Int
+pMaior (x:xs) = auxpMaior 1 0 x xs
+    where
+        auxpMaior _ pm _ [] = pm
+        auxpMaior pa pm maior (x:xs) | x > maior = auxpMaior (pa+1) pa x xs
+                                     | otherwise = auxpMaior (pa+1) pm maior xs
+
+-- | Exercicio 35
+
+lookup :: Eq a => a -> [(a,b)] -> Maybe b
+lookup _ [] = Nothing
+lookup x ((y,ys):z) | x == y = Just ys
+                    | otherwise = lookup x z
+
+-- | Exercicio 36
+
+preCrescente :: Ord a => [a] -> [a]
+preCrescente [] = []
+preCrescente (x:xs) | x < head xs = x : preCrescente xs
+                    | otherwise = [x]
+
+-- | Exercicio 37
+
+iSort :: Ord a => [a] -> [a] -- ^ versão com insertion sort
+iSort [] = []
+iSort (x:xs) = insert x (iSort xs)
+
+iSort' :: Ord a => [a] -> [a] -- ^ versão com bublle sort (o Obama não curte desta)
+iSort' [] = []
+iSort' l = replica k auxiSort' l
+    where
+        k = length l -- ^ tenho de repetir este processo tantas vezes quanto o tamanho do array
+        replica 0 _ x = x
+        replica n f x = replica (n-1) f (f(x))
+        auxiSort' [x] = [x]
+        auxiSort' (x:xs) | x > head xs = head xs : auxiSort' ([x] ++ (tail xs))
+                         | otherwise = x : auxiSort' xs
+
+-- | Exercicio 38
+
+menor :: String -> String -> Bool
+menor [] [] = True
+menor [] _ = True
+menor _ [] = False
+menor (x:xs) (y:ys) |  x == y = menor xs ys
+                    | x < y = True
+                    | otherwise = False
+
+-- | Exercicio 39
+
+elemMSet :: Eq a => a -> [(a,Int)] -> Bool
+elemMSet _ [] = False
+elemMSet x ((y,ys):z) | x == y = True
+                      | otherwise = elemMSet x z
+
+-- | Exercicio 40
+
+convertMSet :: [(a,Int)] -> [a]
+convertMSet [] = []
+convertMSet (x:xs) = replicate (snd x) (fst x) ++ convertMSet xs
+
+-- | Exercicio 41
+
+insereMSet :: Eq a => a -> [(a,Int)] -> [(a,Int)]
+insereMSet x [] = [(x,1)]
+insereMSet x (y:ys) | x == fst y = (fst y, snd y + 1) : ys -- ^ não existem pares cuja primeira componente coincida
+                    | otherwise = y : insereMSet x ys
+
+-- | Exercicio 42
+
+removeMSet :: Eq a => a -> [(a,Int)] -> [(a,Int)] -- ^ acho que interpretei este exercicio de forma mais complexa do que aquilo que realmente pede
+removeMSet _ [] = []
+removeMSet x (y:ys) | x == fst y && snd y == 1 = ys
+                    | x == fst y = (fst y, snd y - 1) : ys
+                    | otherwise = y : removeMSet x ys
+
+-- | Exercicio 43
+
+constroiMSet :: Ord a => [a] -> [(a,Int)] -- ^ o maldito do Jbb chumbou-me na 50 questões porque corrigiu mal este exercicio, "lista ordenada" aprende a ler Jbb
+constroitMSet [] = []
+constroiMSet l = auxconstroiMSet 1 (head l) (tail l)
+    where
+        auxconstroiMSet acc x [] = [(x,acc)]
+        auxconstroiMSet acc x (y:ys) | x == y = auxconstroiMSet (acc+1) x ys
+                                     | otherwise = (x,acc) : auxconstroiMSet 1 y ys
+
+constroiMSet' :: Ord a => [a] -> [(a,Int)] -- ^ versão para listas não ordenadas
+constroiMSet' [] = []
+constroiMSet' l = constroiFinal k l 
+    where
+        k = nub' l
+        conta x [] = 0
+        conta x (y:ys) | x == y = 1 + conta x ys
+                       | otherwise = conta x ys
+        constroiFinal [] _ = []
+        constroiFinal (x:xs) lista = (x,conta x lista) : constroiFinal xs lista
