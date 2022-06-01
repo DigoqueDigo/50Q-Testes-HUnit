@@ -8,6 +8,14 @@ module Questoes where
 
 import Prelude hiding (enumFromTo, enumFromThenTo, (++), (!!), reverse, take, drop, zip, replicate, concat, unwords, unlines, lookup)
 
+data Movimento = Norte | Sul | Este | Oeste deriving Show
+
+type Ponto = (Float,Float)
+
+data Rectangulo = Rect Ponto Ponto
+
+data Equipamento = Bom | Razoavel | Avariado deriving Show
+
 -- | Exercicio 1
 
 enumFromTo :: Int -> Int -> [Int]
@@ -349,3 +357,62 @@ constroiMSet' l = constroiFinal k l
                        | otherwise = conta x ys
         constroiFinal [] _ = []
         constroiFinal (x:xs) lista = (x,conta x lista) : constroiFinal xs lista
+
+-- | Exercicio 44
+
+partitionEithers :: [Either a b] -> ([a],[b])
+partitionEithers [] = ([],[])
+partitionEithers l = case (head l) of Right x -> (e,x:d)
+                                      Left x -> (x:e,d)
+    where (e,d) = partitionEithers (tail l)
+
+-- | Exercicio 45
+
+catMaybes :: [Maybe a] -> [a]
+catMaybes [] = []
+catMaybes l = case (head l) of Nothing -> catMaybes (tail l)
+                               Just x -> x : catMaybes (tail l)
+
+catMaybes' :: [Maybe a] -> [a] -- ^ versão com listas por compreensão (não façam isto no teste da 50 questões, o Jbb vai chumbar-vos)
+catMaybes' lista = [x | Just x <- lista]
+
+-- | Exercico 46
+
+caminho :: (Int,Int) -> (Int,Int) -> [Movimento]
+caminho (x,y) (fx,fy) | x == fx && y == fy = []
+                      | x < fx = Este : caminho (x+1,y) (fx,fy)
+                      | x > fx = Oeste : caminho (x-1,y) (fx,fy)
+                      | y < fy = Norte : caminho (x,y+1) (fx,fy)
+                      | y > fy = Sul : caminho (x,y-1) (fx,fy)
+
+-- | Exercicio 47
+
+hasLoops :: (Int,Int) -> [Movimento] -> Bool
+hasLoops _ [] = False
+hasLoops x movs = elem x (auxhasLoops x movs)
+    where
+        auxhasLoops x [] = [x]
+        auxhasLoops (x,y) (z:zs) = case z of Norte -> (x,y+1) : auxhasLoops (x,y+1) zs
+                                             Sul -> (x,y-1) : auxhasLoops (x,y-1) zs
+                                             Este -> (x+1,y) : auxhasLoops (x+1,y) zs
+                                             Oeste -> (x-1,y) : auxhasLoops (x-1,y) zs
+
+-- | Exercicio 48
+
+contaQuadrados :: [Rectangulo] -> Int
+contaQuadrados [] = 0
+contaQuadrados ((Rect x y):z) | abs (fst x - snd x) == abs (fst y - snd y) = 1 + contaQuadrados z
+                              | otherwise = contaQuadrados z
+
+-- | Exercicio 49
+
+--areaTotal :: [Rectangulo] -> Float
+--areaTotal [] = 0
+--areaTotal
+
+-- | Exercicio 50
+
+naoReparar :: [Equipamento] -> Int
+naoReparar [] = 0
+naoReparar l = case (head l) of Avariado -> naoReparar (tail l)
+                                _ -> 1 + naoReparar (tail l)
