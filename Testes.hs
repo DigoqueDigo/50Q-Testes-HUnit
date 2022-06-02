@@ -9,6 +9,8 @@ module Testes where
 import Prelude hiding (enumFromTo, enumFromThenTo, (++), (!!), reverse, take, drop, zip, replicate, concat, unwords, unlines, lookup)
 import Test.HUnit
 import Questoes
+import Ordenacao
+import Fixtures
 
 correrTestes = runTestTT testes
 
@@ -164,53 +166,53 @@ testes =
     , "Teste 148" ~: insereMSet 'c' [('b',2), ('a',4), ('c',1)] ~=? [('b',2),('a',4), ('c',2)]
     , "Teste 149" ~: insereMSet 'd' [('b',2), ('a',4), ('c',1)] ~=? [('b',2),('a',4), ('c',1), ('d',1)]
     , "Teste 150" ~: insereMSet 'a' [('b',2), ('a',4), ('c',1)] ~=? [('b',2),('a',5), ('c',1)]
-  {-, "Teste 151"
-    , "Teste 152"
-    , "Teste 153"
-    , "Teste 154"
-    , "Teste 155"
-    , "Teste 156"
-    , "Teste 157"
-    , "Teste 158"
-    , "Teste 159"
-    , "Teste 160"
-    , "Teste 161"
-    , "Teste 162"
-    , "Teste 163"
-    , "Teste 164"
-    , "Teste 165"
-    , "Teste 166"
-    , "Teste 167"
-    , "Teste 168"
-    , "Teste 169"
-    , "Teste 170"
-    , "Teste 171"
-    , "Teste 172"
-    , "Teste 173"
-    , "Teste 174"
-    , "Teste 175"
-    , "Teste 176"
-    , "Teste 177"
-    , "Teste 178"
-    , "Teste 179"
-    , "Teste 180"
-    , "Teste 181"
-    , "Teste 182"
-    , "Teste 183"
-    , "Teste 184"
-    , "Teste 185"
-    , "Teste 186"
-    , "Teste 187"
-    , "Teste 188"
-    , "Teste 189"
-    , "Teste 190"
-    , "Teste 191"
-    , "Teste 192"
-    , "Teste 193"
-    , "Teste 194"
-    , "Teste 195"
-    , "Teste 196"
-    , "Teste 197"
-    , "Teste 198"
-    , "Teste 199"-}
+    , "Teste 151" ~: removeMSet 'c' [('b',2), ('a',4), ('c',1)] ~=? [('b',2),('a',4)]
+    , "Teste 152" ~: removeMSet 'a' [('b',2), ('a',4), ('c',1)] ~=? [('b',2),('a',3),('c',1)]
+    , "Teste 153" ~: removeMSet 's' [('b',2), ('a',4), ('c',1)] ~=? [('b',2), ('a',4), ('c',1)]
+    , "Teste 154" ~: removeMSet 'b' [('b',2), ('a',4), ('c',1)] ~=? [('b',1), ('a',4), ('c',1)]
+    , "Teste 155" ~: constroiMSet "aaabccc" ~=? [('a',3), ('b',1), ('c',3)]
+    , "Teste 156 - lista não ordenada" ~: constroiMSet "aabbaaabbcca" ~=? [('a',6), ('b',4), ('c',2)]
+    , "Teste 157 - lista não ordenada" ~: constroiMSet [1,1,1,2,2,3,3,1,1,2,2,5,5] ~=? [(1,5),(2,4),(3,2),(5,2)]
+    , "Teste 158 - lista não ordenada" ~: constroiMSet "computador" ~=? [('c',1),('o',2),('m',1),('p',1),('u',1),('t',1),('a',1),('d',1),('r',1)]
+    , "Teste 159" ~: partitionEithers [Left "foo", Right 3, Left "bar", Right 7, Left "baz"] ~=? (["foo","bar","baz"],[3,7])
+    , "Teste 160" ~: partitionEithers m1 ~=? ([],[6,3,8,7,8])
+    , "Teste 161" ~: partitionEithers m2 ~=? (["foo","portugal","bar","portugal","baz"],[])
+    , "Teste 162" ~: catMaybes m3 ~=? []
+    , "Teste 163" ~: catMaybes [Just 1, Just 12, Nothing, Just 10, Nothing, Just 5, Just 7, Nothing] ~=? [1,12,10,5,7]
+    , "Teste 164" ~: catMaybes [Just 1, Just 12, Nothing, Just 10, Nothing, Just 5, Just 7, Nothing, Just 8] ~=? [1,12,10,5,7,8]
+    , "Teste 165" ~: ordCaminho (caminho (0,0) (5,9)) ~=? [Este,Este,Este,Este,Este,Norte,Norte,Norte,Norte,Norte,Norte,Norte,Norte,Norte]
+    , "Teste 166" ~: ordCaminho (caminho (5,4) (9,2)) ~=? [Este,Este,Este,Este,Sul,Sul]
+    , "Teste 167" ~: ordCaminho (caminho (-9,2) (-15,-9)) ~=? [Oeste,Oeste,Oeste,Oeste,Oeste,Oeste,Sul,Sul,Sul,Sul,Sul,Sul,Sul,Sul,Sul,Sul,Sul]
+    , "Teste 168" ~: ordCaminho (caminho (0,4) (8,7)) ~=? [Este,Este,Este,Este,Este,Este,Este,Este,Norte,Norte,Norte]
+    , "Teste 169" ~: hasLoops (0,0) [Norte,Este,Este,Oeste,Norte,Sul,Oeste,Sul] ~=? True
+    , "Teste 170" ~: hasLoops (0,0) [Norte,Este,Este,Oeste,Norte,Sul,Oeste,Sul,Oeste,Oeste,Oeste] ~=? True
+    , "Teste 171" ~: hasLoops (0,0) [Norte,Este,Este,Oeste,Norte,Sul,Oeste,Oeste,Oeste,Oeste] ~=? False
+    , "Teste 172" ~: hasLoops (0,0) [Norte,Este,Este,Oeste,Norte,Sul,Oeste,Oeste,Oeste,Oeste,Este,Este,Este,Sul] ~=? True
+    , "Teste 173" ~: hasLoops (0,0) [Norte,Este,Este,Oeste,Norte,Sul,Oeste,Oeste,Oeste,Oeste,Este,Este,Este] ~=? False
+    , "Teste 174" ~: contaQuadrados [Rect (0,5) (0,5)] ~=? 0
+    , "Teste 175" ~: contaQuadrados [Rect (0,5) (5,0)] ~=? 1
+    , "Teste 176" ~: contaQuadrados [Rect (0,5) (0,0), Rect (-3,0) (0,3)] ~=? 1
+    , "Teste 177" ~: contaQuadrados [Rect (0,5) (0,0), Rect (-3,0) (0,3), Rect (0,0) (10,0), Rect (5,5) (-10,-10)] ~=? 2
+   {- , "Teste 178" ~: areaTotal [Rect (0,0) ()] ~=?
+    , "Teste 179" ~: areaTotal ~=?
+    , "Teste 180" ~: areaTotal ~=?
+    , "Teste 181" ~: areaTotal ~=?
+    , "Teste 182" ~: areaTotal ~=?
+    , "Teste 183" ~:  ~=?
+    , "Teste 184" ~:  ~=?
+    , "Teste 185" ~:  ~=?
+    , "Teste 186" ~:  ~=?
+    , "Teste 187" ~:  ~=?
+    , "Teste 188" ~:  ~=?
+    , "Teste 189" ~:  ~=?
+    , "Teste 190" ~:  ~=?
+    , "Teste 191" ~:  ~=?
+    , "Teste 192" ~:  ~=?
+    , "Teste 193" ~:  ~=?
+    , "Teste 194" ~:  ~=?
+    , "Teste 195" ~:  ~=?
+    , "Teste 196" ~:  ~=?
+    , "Teste 197" ~:  ~=?
+    , "Teste 198" ~:  ~=?
+    , "Teste 199" ~:  ~=?-}
     ]

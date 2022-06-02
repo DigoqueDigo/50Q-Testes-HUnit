@@ -8,13 +8,13 @@ module Questoes where
 
 import Prelude hiding (enumFromTo, enumFromThenTo, (++), (!!), reverse, take, drop, zip, replicate, concat, unwords, unlines, lookup)
 
-data Movimento = Norte | Sul | Este | Oeste deriving Show
+data Movimento = Norte | Sul | Este | Oeste deriving (Eq,Show)
 
 type Ponto = (Float,Float)
 
 data Rectangulo = Rect Ponto Ponto
 
-data Equipamento = Bom | Razoavel | Avariado deriving Show
+data Equipamento = Bom | Razoavel | Avariado deriving (Eq,Show)
 
 -- | Exercicio 1
 
@@ -338,19 +338,19 @@ removeMSet x (y:ys) | x == fst y && snd y == 1 = ys
 
 -- | Exercicio 43
 
-constroiMSet :: Ord a => [a] -> [(a,Int)] -- ^ o maldito do Jbb chumbou-me na 50 questões porque corrigiu mal este exercicio, "lista ordenada" aprende a ler Jbb
-constroitMSet [] = []
-constroiMSet l = auxconstroiMSet 1 (head l) (tail l)
+constroiMSet' :: Ord a => [a] -> [(a,Int)] -- ^ o maldito do Jbb chumbou-me na 50 questões porque corrigiu mal este exercicio, "lista ordenada" aprende a ler Jbb
+constroiMSet' [] = []
+constroiMSet' l = auxconstroiMSet 1 (head l) (tail l)
     where
         auxconstroiMSet acc x [] = [(x,acc)]
         auxconstroiMSet acc x (y:ys) | x == y = auxconstroiMSet (acc+1) x ys
                                      | otherwise = (x,acc) : auxconstroiMSet 1 y ys
 
-constroiMSet' :: Ord a => [a] -> [(a,Int)] -- ^ versão para listas não ordenadas
-constroiMSet' [] = []
-constroiMSet' l = constroiFinal k l 
+constroiMSet :: Ord a => [a] -> [(a,Int)] -- ^ versão para listas não ordenadas
+constroiMSet [] = []
+constroiMSet l = constroiFinal k l 
     where
-        k = nub' l
+        k = nub l
         conta x [] = 0
         conta x (y:ys) | x == y = 1 + conta x ys
                        | otherwise = conta x ys
