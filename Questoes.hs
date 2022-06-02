@@ -22,16 +22,11 @@ enumFromTo :: Int -> Int -> [Int]
 enumFromTo x y | x > y = []
                | otherwise = x : enumFromTo (x+1) y
 
-
 -- | Exercicio 2
 
 enumFromThenTo :: Int -> Int -> Int -> [Int]
-enumFromThenTo x y z = auxenumFromThenTo x lim z
-    where
-        lim = abs (y - x)
-        auxenumFromThenTo x lim z | x > z = []
-                                  | otherwise = x : auxenumFromThenTo (x+lim) lim z 
-
+enumFromThenTo x y z | (x > z && y > x) || (x < z && x > y) = []
+                     | otherwise = x : enumFromThenTo y (2*y-x) z
 
 -- | Exercicio 3
 
@@ -201,17 +196,17 @@ elemIndicies x l = auxIndices x l 0
 
 -- | Exercicio 26
 
-nub :: Eq a => [a] -> [a]
-nub [] = []
-nub (x:xs) | elem x xs = nub xs
-           | otherwise = x : nub xs
+nub' :: Eq a => [a] -> [a]
+nub' [] = []
+nub' (x:xs) | elem x xs = nub' xs
+            | otherwise = x : nub' xs
 
-nub' :: Eq a => [a] -> [a] -- ^ elementos ordenados tal como aparece no exemplo do enuciado
-nub' l = auxnub' l []
+nub :: Eq a => [a] -> [a] -- ^ elementos ordenados tal como aparece no exemplo do enuciado
+nub l = auxnub l []
     where
-        auxnub' [] _ = []
-        auxnub' (x:xs) acc | elem x acc = auxnub' xs acc
-                           | otherwise = x : auxnub' xs (acc ++ [x])
+        auxnub [] _ = []
+        auxnub (x:xs) acc | elem x acc = auxnub xs acc
+                          | otherwise = x : auxnub xs (acc ++ [x])
 
 -- | Exercicio 27
 
