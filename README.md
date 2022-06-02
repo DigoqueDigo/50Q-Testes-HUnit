@@ -14,7 +14,7 @@ Caso ainda não tenham isntalado o [HUnit](https://hackage.haskell.org/package/H
 ```bash
 $ cabal v2-install --lib HUnit
 ```
-## Correr os testes
+## Correr os Testes
 
 Para testarem as vossas resoluções basta mudar o import do ficheiro .hs
 
