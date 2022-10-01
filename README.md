@@ -4,7 +4,7 @@ Esta é a minha resolução dos exercicios propostos na cadeira de Programação
 
 ## Testes
 
-Incluí alguns testes que abrangem todos os exercicios, assim podemos testar tudo de uma só vez sem ter-mos de perder muito tempo a correr os testes manualmente (btw, a minha resolução não passa em dois dos testes :smiling_face_with_tear:).
+Incluí alguns testes que abrangem todos os exercicios, assim podemos testar tudo de uma só vez sem termos de perder muito tempo a correr os testes manualmente (btw, a minha resolução não passa em dois dos testes :smiling_face_with_tear:).
 
 ## Biblioteca utilizada nos Testes
 
