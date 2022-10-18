@@ -8,7 +8,7 @@ Incluí alguns testes que abrangem todos os exercicios, assim podemos testar tud
 
 ## Biblioteca utilizada nos Testes
 
-Caso ainda não tenham isntalado o [HUnit](https://hackage.haskell.org/package/HUnit) basta correr o seguinte comando
+Caso ainda não tenham instalado o [HUnit](https://hackage.haskell.org/package/HUnit) basta correr o seguinte comando
 
 ```bash
 $ cabal v2-install --lib HUnit
