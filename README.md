@@ -15,7 +15,7 @@ $ cabal v2-install --lib HUnit
 ```
 ## Correr os Testes
 
-Para testarem as vossas resoluções basta mudar o import do ficheiro .hs
+Para testarem as vossas resoluções basta mudar o import do ficheiro ```Testes.hs```
 
 ```bash
 $ ghci Testes.hs
